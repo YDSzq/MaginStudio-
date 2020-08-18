@@ -18,32 +18,47 @@
         <el-menu-item index="/team">团队</el-menu-item>
         <el-menu-item index="/forum">论坛</el-menu-item>
         <el-menu-item index="/activity">活动</el-menu-item>
-        <el-menu-item class="right" v-if="!user">
-          <span class="navbar-a" @click="signin_o=true">登录</span>
+        <el-menu-item class="right" v-if="!user.id">
+          <span class="navbar-a" @click="sign_box=true;sign_name='in'">登录</span>
           /
-          <span class="navbar-a" @click="signup_o=true">注册</span>
+          <span class="navbar-a" @click="sign_box=true;sign_name='up'">注册</span>
         </el-menu-item>
-        <el-submenu class="right" v-if="user">
+        <el-submenu class="right" v-if="user.id">
           <template slot="title">
             <el-avatar :size="30" :src="user.avatar_url" />
           </template>
-          <el-menu-item :index="'/user/' + user.id">我的主页</el-menu-item>
-          <el-menu-item index="/new">新建项目</el-menu-item>
-          <el-menu-item index="/profile">设置</el-menu-item>
-          <el-menu-item index="/help">帮助</el-menu-item>
-          <el-menu-item @click="sign_out">退出登录</el-menu-item>
+          <el-menu-item @click="a()">退出登录</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
+    <el-dialog :close-on-click-modal="false" :visible.sync="sign_box" width="30%">
+      <el-tabs v-model="sign_name">
+        <el-tab-pane label="登录" name="in">
+          <signin />
+        </el-tab-pane>
+        <el-tab-pane label="注册" name="up">
+          <signup />
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
   </div>
 </template>
 <script>
+import signin from "./sign/signin";
+import signup from "./sign/signup";
 export default {
   data() {
     return {
       activeIndex: this.$route.path,
       navbarS: 0,
+      user: this.$store.state.user,
+      sign_box: false,
+      sign_name: "in",
     };
+  },
+  components: {
+    signin,
+    signup,
   },
   mounted() {
     window.addEventListener("scroll", this.s);
@@ -57,13 +72,14 @@ export default {
       this.$store.commit("signout");
     },
   },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    },
-  },
   created() {
     this.$store.commit("getuser");
+  },
+  watch: {
+    "$store.state.user": function () {
+      this.user = this.$store.state.user;
+      console.log(this.$store.state.user);
+    },
   },
 };
 </script>
