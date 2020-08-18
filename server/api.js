@@ -5,7 +5,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 var request = require('request');
 var cheerio = require('cheerio');
-const { get } = require('core-js/fn/dict');
 var pid_os = {
     'method': 'GET',
     'url': 'https://shequ.codemao.cn/',
@@ -102,11 +101,44 @@ app.post('/works', function (req, res) {
     var works_n = req.body.works_n;
     var options = {
         'method': 'GET',
-        'url': 'https://api.codemao.cn/web/works/subjects/labels/1258/posts?limit=20&offset='+works_n,
+        'url': 'https://api.codemao.cn/web/works/subjects/1061/works?&offset=' + works_n + '&limit=20&sort=-audited_at,-id',
         'headers': {
             'Content-Type': 'application/json',
-            'Cookie': 'acw_tc=707c9fcc15977551041548599e50d43828f3268b5e597570d50c478594361d'
-        },
+            'Cookie': 'acw_tc=2f624a5915977669227243705e5c36be342e67581fa890b2757f4b965f25c6'
+        }
+    };
+    request(options, function (error, response) {
+        if (error) throw new Error(error);
+        res.status(response.statusCode);
+        res.json(JSON.parse(response.body))
+    });
+});
+app.post('/posts', function (req, res) {
+    var posts_n = req.body.posts_n;
+    var options = {
+        'method': 'GET',
+        'url': 'https://api.codemao.cn/web/works/subjects/labels/1258/posts?offset=' + posts_n + '&limit=20',
+        'headers': {
+            'Content-Type': 'application/json',
+            'Cookie': 'acw_tc=707c9f9415977711032364220e56d5946ba3bf495fd300eb7b18482db3d3c8'
+        }
+    };
+    request(options, function (error, response) {
+        if (error) throw new Error(error);
+        res.status(response.statusCode);
+        res.json(JSON.parse(response.body))
+    });
+});
+app.post('/posts/search', function (req, res) {
+    var posts_n = req.body.posts_n;
+    var word = req.body.word;
+    var options = {
+        'method': 'GET',
+        'url': 'https://api.codemao.cn/web/works/subjects/labels/1258/posts?keyword='+word+'&limit=20&offset=' + posts_n + '&limit=20',
+        'headers': {
+            'Content-Type': 'application/json',
+            'Cookie': 'acw_tc=707c9f9415977711032364220e56d5946ba3bf495fd300eb7b18482db3d3c8'
+        }
     };
     request(options, function (error, response) {
         if (error) throw new Error(error);

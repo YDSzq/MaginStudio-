@@ -1,22 +1,20 @@
 .works {
-    margin: 10px 20px 20px 0;
-    display: inline-block;
-    transition: 0.3s ease-out;
-    float: left;
-  }
+  margin: 10px 20px 20px 0;
+  transition: 0.3s ease-out;
+  border-radius: 10px;
+  box-shadow: 0 2px 3px rgb(168, 165, 165);
+}
 .work_item {
   position: relative;
   height: 308px;
-  width: 220px;
-  cursor: pointer;
   background: #fff;
-  border-radius: 4px;
+  border-radius: 10px;
   display: block;
   overflow: hidden;
-  -webkit-mask-image: -webkit-radial-gradient(#fff, #000);
 }
 .works:hover {
-  box-shadow: 0 0 30px #666;
+  box-shadow: 0 4px 10px rgb(168, 165, 165);
+  transform: scale(1.05);
 }
 
 .work_item .work_img_wrap {

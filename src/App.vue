@@ -25,9 +25,20 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  overflow-x: hidden;
 }
 * {
   margin: 0;
   padding: 0;
+}
+*::-webkit-scrollbar{
+  width: 10px;
+}
+*::-webkit-scrollbar-thumb{
+  border-radius: 10px;
+  background: #bbbbbb;
+}
+a{
+  text-decoration: none;
 }
 </style>

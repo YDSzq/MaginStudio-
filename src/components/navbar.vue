@@ -1,5 +1,6 @@
 <template>
   <div style="position:relative">
+    <el-backtop target="body"></el-backtop>
     <div class="navbar-s"></div>
     <div :class="this.navbarS>=100?'navbarS':''" class="navbar">
       <el-menu
@@ -17,17 +18,16 @@
         <el-menu-item index="/">发现</el-menu-item>
         <el-menu-item index="/team">团队</el-menu-item>
         <el-menu-item index="/forum">论坛</el-menu-item>
-        <el-menu-item index="/activity">活动</el-menu-item>
         <el-menu-item class="right" v-if="!user.id">
           <span class="navbar-a" @click="sign_box=true;sign_name='in'">登录</span>
           /
           <span class="navbar-a" @click="sign_box=true;sign_name='up'">注册</span>
         </el-menu-item>
-        <el-submenu class="right" v-if="user.id">
+        <el-submenu index="/" class="right" v-if="user.id">
           <template slot="title">
             <el-avatar :size="30" :src="user.avatar_url" />
           </template>
-          <el-menu-item @click="a()">退出登录</el-menu-item>
+          <el-menu-item @click="sign_out()">退出登录</el-menu-item>
         </el-submenu>
       </el-menu>
     </div>
@@ -78,14 +78,13 @@ export default {
   watch: {
     "$store.state.user": function () {
       this.user = this.$store.state.user;
-      console.log(this.$store.state.user);
     },
   },
 };
 </script>
 <style>
 .navbar {
-  z-index: 100;
+  z-index: 2001;
   width: 100%;
   user-select: none;
   top: 0;

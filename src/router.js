@@ -9,5 +9,10 @@ export default new Router({
             name: "home",
             component: () => import('./pages/home.vue')
         },
+        {
+            path: "/forum",
+            name: "forum",
+            component: () => import('./pages/forum.vue')
+        },
     ]
 })
