@@ -14,5 +14,10 @@ export default new Router({
             name: "forum",
             component: () => import('./pages/forum.vue')
         },
+        {
+            path:"*",
+            name:"404",
+            component: () => import('./pages/404.vue')
+        }
     ]
 })

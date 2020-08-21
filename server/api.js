@@ -22,6 +22,7 @@ app.post('/login', function (req, res) {
         p = JSON.parse(p.trim()).pid;
         var data = req.body;
         data.pid = p;
+        console.log(data)
         var options = {
             'method': 'POST',
             'url': 'https://api.codemao.cn/tiger/v3/web/accounts/login',
@@ -29,7 +30,7 @@ app.post('/login', function (req, res) {
                 'Content-Type': 'application/json',
                 'Cookie': 'acw_tc=707c9fda15976443535474157e34e891ac5e1e02d4e9bf0d27209fcc2fb0b0; authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozNzEwODcsInVzZXJfdHlwZSI6InN0dWRlbnQiLCJqdGkiOiI4YjJiNjNiYy02Yjk5LTQ0MDUtOGE1NC1kNTM4MGI2OTk1MGYiLCJpYXQiOjE1OTc2NDQzNTN9.ORnMA5cVqJfzpdYSqY7bzqCIRnZACVN39pHe7VoPow0'
             },
-            body: JSON.stringify(req.body)
+            body: JSON.stringify(data)
         };
         request(options, function (error, response) {
             if (error) throw new Error(error);
@@ -134,10 +135,43 @@ app.post('/posts/search', function (req, res) {
     var word = req.body.word;
     var options = {
         'method': 'GET',
-        'url': 'https://api.codemao.cn/web/works/subjects/labels/1258/posts?keyword='+word+'&limit=20&offset=' + posts_n + '&limit=20',
+        'url': 'https://api.codemao.cn/web/works/subjects/labels/1258/posts?keyword=' + word + '&limit=20&offset=' + posts_n + '&limit=20',
         'headers': {
             'Content-Type': 'application/json',
             'Cookie': 'acw_tc=707c9f9415977711032364220e56d5946ba3bf495fd300eb7b18482db3d3c8'
+        }
+    };
+    request(options, function (error, response) {
+        if (error) throw new Error(error);
+        res.status(response.statusCode);
+        res.json(JSON.parse(response.body))
+    });
+});
+app.post('/join', function (req, res) {
+    var posts = req.body;
+    var options = {
+        'method': 'POST',
+        'url': 'https://api.codemao.cn/web/work_shops/users/apply/join',
+        'headers': {
+            'Content-Type': 'application/json',
+            'Cookie': 'acw_tc=2f624a0315978848936781444e349b1d5f863db98a36d417011e630956690a; authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozNzEwODcsInVzZXJfdHlwZSI6InN0dWRlbnQiLCJqdGkiOiIyNTc4MmQzOC1lMWI2LTRmYWQtOGFjNS1hY2JlNjIzZTU1NjUiLCJpYXQiOjE1OTc4ODU0NTh9.PaYgyb2_iQzWZ1rcHvcPeWwllSp0JCt0Aier3cxAYFo'
+        },
+        body: JSON.stringify(posts)
+    };
+    request(options, function (error, response) {
+        if (error) throw new Error(error);
+        res.status(response.statusCode);
+        res.json(JSON.parse(response.body))
+    });
+});
+app.get('/isjoin', function (req, res) {
+    var id = 745;
+    var options = {
+        'method': 'GET',
+        'url': 'https://api.codemao.cn/web/work_shops/users/join/judge?id=' + id,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Cookie': 'authorization=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozNzEwODcsInVzZXJfdHlwZSI6InN0dWRlbnQiLCJqdGkiOiIyNTc4MmQzOC1lMWI2LTRmYWQtOGFjNS1hY2JlNjIzZTU1NjUiLCJpYXQiOjE1OTc4ODU0NTh9.PaYgyb2_iQzWZ1rcHvcPeWwllSp0JCt0Aier3cxAYFo; acw_tc=707c9fcb15978869106918396e2ec63fe7dfc28f6f9f00ed3b995d6257d6f5'
         }
     };
     request(options, function (error, response) {

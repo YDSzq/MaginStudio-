@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div class="all-work-boxs">
+    <div class="all-work-boxs" v-loading="loading">
       <el-row>
         <el-col :span="6" v-for="(work,item) in works.items" :key="item">
           <div class="works">
             <div class="work_item">
-              <router-link :to="'/work/'+work.id">
+              <a target="_blank" :href="'https://shequ.codemao.cn/work/'+work.id">
                 <div class="work_img_wrap">
                   <span class="work_img" :style="'background-image:url('+work.preview+');'"></span>
                   <span></span>
                 </div>
-              </router-link>
+              </a>
               <div class="work_detail">
                 <h5 class="work_name">{{work.name}}</h5>
                 <ul class="datas">
@@ -44,6 +44,7 @@
             background
             layout="prev, pager, next"
             :total="works.total"
+            @current-change="topost"
           />
         </el-col>
       </el-row>
@@ -56,28 +57,33 @@ export default {
   data() {
     return {
       works: [],
+      loading:true,
     };
   },
-  created() {
-    const loading = this.$loading({
-      lock: true,
-      text: "Loading",
-      spinner: "el-icon-loading",
-      background: "rgba(0, 0, 0, 0.7)",
-    });
-    this.$axios({
-      method: "POST",
-      url: "/api/works",
-      data: { works_n: this.works.length + 20 },
-    })
-      .then((response) => {
-        loading.close();
-        this.works = response.data;
+  methods: {
+    getwork(p) {
+      this.$axios({
+        method: "POST",
+        url: "/api/works",
+        data: { works_n: (p - 1) * 20 + 20 },
       })
-      .catch((error) => {
-        console.log(error); //请求失败返回的数据
-        this.$message.error("未知错误");
-      });
+        .then((response) => {
+          this.works = response.data;
+          this.loading=false;
+        })
+        .catch((error) => {
+          console.log(error); //请求失败返回的数据
+          this.loading=false;
+          this.$message.error("未知错误");
+        });
+    },
+    topost(currentPage) {
+      this.getwork(currentPage);
+    },
+  },
+  created() {
+    this.loading=true;
+    this.getwork(1);
   },
 };
 </script>

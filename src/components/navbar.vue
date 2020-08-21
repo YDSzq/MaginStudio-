@@ -84,7 +84,7 @@ export default {
 </script>
 <style>
 .navbar {
-  z-index: 2001;
+  z-index: 1000;
   width: 100%;
   user-select: none;
   top: 0;
