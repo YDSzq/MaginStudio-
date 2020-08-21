@@ -11,6 +11,12 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: { // 在发出请求后将/api替换为''空值，这样不影响接口请求
           '^/api': ''
+        },
+        onProxyReq: proxyReq => {
+          // 接口设置了域名限制，所以要改掉origin来符合后端的域名限制的判断
+          if (proxyReq.getHeader('origin')) {
+            proxyReq.setHeader('origin', 'https://shequ.codemao.cn/');
+          }
         }
       }
     }
